@@ -1,36 +1,27 @@
-const input = require("fs").readFileSync("/dev/stdin").toString().trim().split("\n").map((e) => e.split(" "));
+const fs = require('fs');
+let input = fs.readFileSync('/dev/stdin').toString().trim().split('\n');
+let n = +input.shift();
+let result = [];
 
-const N = Number(input.shift()[0]);
+for ( let i = 0; i < n; i++ ) {
+    let xArr = input[i * 4 + 2].split(' ').map(Number);
+    let yArr = input[i * 4 + 3].split(' ').map(Number);
+    let maxX = Math.max(...xArr);
+    let maxY = Math.max(...yArr);
+    let newXArr = xArr.filter(e => e === maxX);
+    let newYArr = yArr.filter(e => e === maxY);
+    let vic = "";
 
-const answer = [];
+    if ( newXArr[0] >= newYArr[0] ) {
+        vic = "S";
+    } else {
+        vic = "B";
+    } 
 
-for (let i = 0; i < N; i++) {
-  let sejun = input[i * 4 + 2].map(Number).sort((a, b) => b - a);
-  let sebi = input[i * 4 + 3].map(Number).sort((a, b) => b - a);
+    result.push(vic);
+};
 
-  for (
-    let j = 0;
-    j < Number(input[i * 4 + 1][0]) + Number(input[i * 4 + 1][1]);
-    j++
-  ) {
-    if (sejun[sejun.length - 1] >= sebi[sebi.length - 1]) {
-      sebi.pop();
-    }
-    if (sejun[sejun.length - 1] < sebi[sebi.length - 1]) {
-      sejun.pop();
-    }
-    if (!sejun.length) {
-      answer.push("B");
-      break;
-    }
-    if (!sebi.length) {
-      answer.push("S");
-      break;
-    }
-  }
-  if (!sejun.length && !sebi.length) {
-    answer.push("C");
-  }
+if ( result.length === 0 ) {
+    result.push("C");
 }
-
-console.log(answer.join("\n"));
+console.log(result.join('\n'));
