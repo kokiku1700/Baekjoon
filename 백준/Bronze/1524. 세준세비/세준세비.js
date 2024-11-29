@@ -8,11 +8,10 @@ for ( let i = 0; i < n; i++ ) {
     let yArr = input[i * 4 + 3].split(' ').map(Number);
     let maxX = Math.max(...xArr);
     let maxY = Math.max(...yArr);
-    let newXArr = xArr.filter(e => e === maxX);
-    let newYArr = yArr.filter(e => e === maxY);
+
     let vic = "";
 
-    if ( newXArr[0] >= newYArr[0] ) {
+    if ( maxX >= maxY ) {
         vic = "S";
     } else {
         vic = "B";
