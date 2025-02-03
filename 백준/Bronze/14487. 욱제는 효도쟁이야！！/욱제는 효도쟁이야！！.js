@@ -1,7 +1,7 @@
 const fs = require('fs');
 const input = fs.readFileSync('/dev/stdin').toString().trim().split('\n');
-let arr = input[1].split(' ').map(Number).sort((a, b) => a - b);
-arr.pop();
-const result = arr.reduce((a, b) => a + b);
+const arr = input[1].split(' ').map(Number);
+const sum = arr.reduce((a, b) => a + b);
+const max = Math.max(...arr);
 
-console.log(result);
+console.log(sum - max);
