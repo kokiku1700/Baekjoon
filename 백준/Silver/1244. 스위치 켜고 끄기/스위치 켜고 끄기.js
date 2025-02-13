@@ -1,56 +1,48 @@
-const fs = require('fs')
-const filepath = process.platform === 'linux' ? '/dev/stdin' : './input.txt';
-const input = fs.readFileSync(filepath).toString().split('\n');
-const n = +input[0];
-let arr = input[1].split(' ').map(Number);
-const m = +input[2];
-let operations = [];
-for (let i = 0; i < m; i++) {
-    let operation = input[3 + i].split(' ').map(Number);
-    operations.push(operation);
-}
+const fs = require('fs');
+const input = fs.readFileSync('/dev/stdin').toString().trim().split('\n');
+const switchN = +input.shift();
+const switchArr = input.shift().split(' ').map(Number);
+const n = input.shift();
+let result = '';
 
-function changeArr(){
-    for(let i = 0; i< m; i++){
-        const gender = operations[i][0];
-        const num = operations[i][1];
-        if(gender == 1){
-            for (let j = num; j <= n; j += num)
-                {
-                    arr[j - 1] = arr[j - 1] === 1 ? 0 : 1;
-                }
+input.forEach(e => {
+    let [gender, idx] = e.split(' ').map(Number);
+    
+    if ( gender === 1 ) {
+        for ( let i = idx; i <= switchN; i += idx ) {
+            switchArr[i - 1] = switchArr[i - 1] === 1 ? 0 : 1;
+        };
+    } else {
+        let min = idx;
+        let max = idx;
+        
+        while ( true ) {
+            if ( min === 0 || max > switchN ) {
+                min++;
+                max--;
+                break;
             }
-        else if(gender == 2){
-            let index = num - 1;
-            arr[index] = arr[index] === 1 ? 0 : 1;
-            for (let j = 1; index - j >= 0 && index + j < n; ++j)
-            {
-                if (arr[index - j] == arr[index + j])
-                {
-                    arr[index - j] = arr[index - j] === 1 ? 0 : 1;
-                    arr[index + j] = arr[index + j] === 1 ? 0 : 1;
-                }
-                else
-                {
-                    break;
-                }
+
+            if ( switchArr[min - 2] === switchArr[max] ) {
+                min--;
+                max++;
+            } else {
+                break;
             }
-        }
-    }
+        };
+        for ( let i = min; i <= max; i++ ) {
+            switchArr[i - 1] === 1 ? switchArr[i - 1] = 0 : switchArr[i - 1] = 1;
+        };
+    };
+});
 
+for ( let i = 0; i < switchN; i++ ) {
+    
+    if ( i % 20 === 19 ) {
+        result += `${switchArr[i]}\n`;
+    } else {
+        result += `${switchArr[i]} `;
+    }
 }
 
-function PrintResult()
-{
-    let result = '';
-    for (let i = 0; i < n; i++) {
-        result += arr[i] + ' ';
-        if ((i + 1) % 20 === 0) {
-            result += '\n';
-        }
-    }
-    console.log(result.trim());
-}
-
-changeArr();
-PrintResult();
+console.log(result.trim());
