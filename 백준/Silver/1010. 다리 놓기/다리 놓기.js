@@ -1,10 +1,11 @@
 const fs = require('fs');
 const input = fs.readFileSync('/dev/stdin').toString().trim().split('\n');
 let result = [];
+const dp = Array.from({ length: 30 }, () => new Array(30).fill(0));
 input.shift();
 
 input.forEach(e => {
-    let dp = Array.from({ length: 30 }, () => new Array(30).fill(0));
+    
     const [n, m] = e.split(' ').map(Number);
 
     function dfs (n, r) {
